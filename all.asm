@@ -32,9 +32,9 @@ a_proc_32:
 	nop
 
 	; Call a long proc from pmode
-	mov eax,4
-	xor ecx,ecx
-	linear edx,a_proc_64,U64
+;	mov eax,4
+;	xor ecx,ecx
+;	linear edx,a_proc_64,U64
 ;	xchg bx,bx
 ;	int 50h
 ;	xchg bx,bx

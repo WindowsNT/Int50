@@ -26,6 +26,12 @@ F_Handler50_2_Return:
 mov ax,STACK16
 mov ss,ax
 sti
+
+
+; Prepare ACPI
+call PrepareACPI
+
+
 iret
 
 F_Handler50_No2:

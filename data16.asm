@@ -57,6 +57,25 @@ current_sp_16 dw 0
 
 PhysicalPagingOffset64 dd 0
 
+; -- APIC
+struc A_CPU a,b,c,d
+        {
+        .acpi   dd a
+        .apic   dd b
+        .flags  dd c
+		.handle dd d
+        }
 
-msg_hello db "Hello$"
+
+numcpus db 0
+somecpu A_CPU 0,0,0,0
+cpusstructize = $-(somecpu)
+CpusOfs:
+cpus db cpusstructize*64 dup(0)
+MainCPUAPIC db 0 
+LocalApic dd 0xFEE00000
+RsdtAddress dd 0
+XsdtAddress dq 0
+
+msg_hello db "Hello",0xd,0xa,"$"
 
