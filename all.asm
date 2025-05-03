@@ -39,10 +39,6 @@ a_proc_32:
 	ret
 USE16
 
-SEGMENT S16 USE16
-ORG 0
-ss16 dw 1024 dup (?)
-ss16_end:
 
 
 SEGMENT U16 USE16
@@ -52,9 +48,9 @@ Thread16_1:
 	db 4096 dup (144) ; fill NOPs for alignment
 
 	; Thread 1 Stack
-	mov ax,S16
+	mov ax,STACK_SEGMENT
 	mov ss,ax
-	mov sp,ss16_end
+	mov sp,stack_t2_end
 	mov ax,DATA16
 	mov ds,ax
 
