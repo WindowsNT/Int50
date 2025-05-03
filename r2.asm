@@ -29,8 +29,10 @@ sti
 
 
 ; Prepare ACPI
+cmp dx,1
+jnz nopa
 call PrepareACPI
-
+nopa:
 
 iret
 
