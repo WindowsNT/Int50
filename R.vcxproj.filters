@@ -99,5 +99,8 @@
     <None Include="p4.asm">
       <Filter>Common\32</Filter>
     </None>
+    <None Include="r5.asm">
+      <Filter>Common\16</Filter>
+    </None>
   </ItemGroup>
 </Project>

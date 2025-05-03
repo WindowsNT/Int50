@@ -93,6 +93,7 @@
     <None Include="macros.asm" />
     <None Include="r3.asm" />
     <None Include="r4.asm" />
+    <None Include="r5.asm" />
     <None Include="runx.bat" />
     <None Include="code16.asm" />
     <None Include="stack16.asm" />

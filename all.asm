@@ -43,6 +43,17 @@ USE16
 SEGMENT U16 USE16
 ORG 0
 
+Thread16_1:
+	db 4096 dup (144) ; fill NOPs for alignment
+	
+	mov ax,DATA16
+	mov ds,ax
+	mov dx, msg_hello2
+	mov ax,0x0900
+	int 21h
+	hlt
+	hlt
+
 start16:
 	CLI
 	mov ax,DATA16
@@ -57,9 +68,6 @@ start16:
 
 	mov ax,DATA16
 	mov ds,ax
-	mov ax,0x0900
-	mov dx, msg_hello
-	int 21h
 
 
 ; Initialize 
@@ -69,6 +77,16 @@ start16:
 ; Enter Unreal
 	mov eax,2
 	int 50h
+
+ ; A thread
+	mov eax,5
+	linear edx,Thread16_1,U16
+	mov ebx,1
+	int 50h
+	MOV AH,86H
+	MOV CX,100
+	MOV DX,10*1000 
+	INT 15H
 
 ; Call a far proc
 	mov eax,3
@@ -80,6 +98,12 @@ start16:
 	xor ecx,ecx
 	linear edx,a_proc_64,U64
 	int 50h
+
+; Message
+	mov ax,0x0900
+	mov dx, msg_hello
+	int 21h
+
 
 ; End
 	mov ax,0x4c00

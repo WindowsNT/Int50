@@ -57,7 +57,7 @@ current_sp_16 dw 0
 
 PhysicalPagingOffset64 dd 0
 
-; -- APIC
+; -- APIC -- 
 struc A_CPU a,b,c,d
         {
         .acpi   dd a
@@ -76,6 +76,9 @@ MainCPUAPIC db 0
 LocalApic dd 0xFEE00000
 RsdtAddress dd 0
 XsdtAddress dq 0
+mut_ipi db 0xFF
+mut_1 db 0xFF
 
 msg_hello db "Hello",0xd,0xa,"$"
+msg_hello2 db "Hello from thread",0xd,0xa,"$"
 
