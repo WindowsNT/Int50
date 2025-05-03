@@ -13,10 +13,11 @@ iretd
 ; Function 4: Execute 64-bit linear proc
 start32_4: ; 
 cli
-mov ax,data32_idx
-mov ds,ax
 linear ebp,esp,STACK_SEGMENT
 mov esp,ebp
+start32_4_from_pm_already:
+mov ax,data32_idx
+mov ds,ax
 mov ax,stack32_idx
 
 ; Disable paging, assuming that we are in a see-through.
@@ -70,6 +71,8 @@ jz mustreal
 mov byte [where_return],0
 mov ax,data32_idx
 mov ds,ax
+mov ax,stack32_idx
+mov ss,ax
 iret
 
 mustreal:
