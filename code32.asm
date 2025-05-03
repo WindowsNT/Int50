@@ -63,13 +63,14 @@ wrmsr ; Write EFER.
 ; else rM
 mov ax,data32_idx
 mov ds,ax
-cmp dword [where_return],0
+cmp byte [where_return],0
 jz mustreal
 
 ; must return to pmode
+mov byte [where_return],0
 mov ax,data32_idx
 mov ds,ax
-iretd
+iret
 
 mustreal:
 JMP code16_idx:F_GoingBackFrom3

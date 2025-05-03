@@ -10,6 +10,7 @@ jnz P_Handler50_No4
 cli
 mov ax,data32_idx
 mov ds,ax
+mov byte [ds:where_return],1
 jmp code32_idx:start32_4
 
 
