@@ -12,6 +12,7 @@ include "r2.asm"
 include "r3.asm"
 include "r4.asm"
 include "r5.asm"
+include "r6.asm"
 iret
 
 F_InstallVector50:

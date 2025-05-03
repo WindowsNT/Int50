@@ -15,7 +15,7 @@ CreateFlatPagingForLong:
     mov     edi,esi
 	xor eax,eax
     mov     ecx,0x3000 / 4
-;    rep     stosd
+    rep     stosd
 
 	; Put the PML4T to 0x0000, these are 512 entries, so it takes 0x1000 bytes
 	; We only want the first PML4T 
