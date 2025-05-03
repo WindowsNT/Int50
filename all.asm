@@ -63,12 +63,13 @@ start16:
 	int 50h
 
 ; Call a far proc
+xchg bx,bx
 	mov eax,3
 	linear edx,a_proc_32,U32
 	int 50h
 
 ; Call a long proc
-
+xchg bx,bx
 	mov eax,4
 	xor ecx,ecx
 	linear edx,a_proc_64,U64

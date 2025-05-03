@@ -2,18 +2,20 @@ USE32
 
 CreateFlatPagingForLong: 
 
-	; We will use MB 15 to place the paging table
+	; We will use MB MB_PAGE_UPPER to place the paging table
     pushad
+	push ds
 	push es
 	mov ax,flatdata32_idx
+	mov ds,ax
 	mov es,ax
-	mov esi,15*1024*1024
+	mov esi,MB_PAGE_UPPER*1024*1024
 
     ; clear
     mov     edi,esi
 	xor eax,eax
-    mov     ecx,03000h
-    rep     stosb
+    mov     ecx,0x3000 / 4
+;    rep     stosd
 
 	; Put the PML4T to 0x0000, these are 512 entries, so it takes 0x1000 bytes
 	; We only want the first PML4T 
@@ -33,7 +35,6 @@ CreateFlatPagingForLong:
 	loop .lxf1
 
 	pop es
-
-
+	pop ds
 	popad
 	ret

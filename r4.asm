@@ -9,6 +9,9 @@ jnz F_Handler50_No4
 
 ; Enter PM
 cli
+mov ax,DATA32
+mov ds,ax
+mov dword [current_sp_32],0
 mov ax,DATA16
 mov ds,ax
 mov [current_sp_16],sp

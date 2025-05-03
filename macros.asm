@@ -1,3 +1,4 @@
+MB_PAGE_UPPER = 14
 macro linear reg,trg,seg
 	{
 ;	xor reg,reg

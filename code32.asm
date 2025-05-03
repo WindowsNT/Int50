@@ -32,7 +32,7 @@ mov ecx, 0c0000080h ; EFER MSR number.
 rdmsr ; Read EFER.
 bts eax, 8 ; Set LME=1.
 wrmsr ; Write EFER.
-mov eax,15*1024*1024 ; 15MB
+mov eax,MB_PAGE_UPPER*1024*1024 ; upper MB_PAGE_UPPER
 mov cr3,eax
 ; Enable Paging to activate Long Mode. Assuming that CR3 is loaded with the physical address of the page table.
 mov eax, cr0 ; Read CR0.
