@@ -15,9 +15,9 @@ start32_4: ;
 cli
 mov ax,data32_idx
 mov ds,ax
+linear ebp,esp,STACK_SEGMENT
+mov esp,ebp
 mov ax,stack32_idx
-mov sp,stack32_end
-mov ss,ax
 
 ; Disable paging, assuming that we are in a see-through.
 push ecx
@@ -59,19 +59,16 @@ rdmsr ; Read EFER.
 btc eax, 8 ; Set LME=0.
 wrmsr ; Write EFER.
 
-; If we have saved ESP, we go back to 32-bit PM
+; If we have saved where_return, we go back to 32-bit PM
 ; else rM
 mov ax,data32_idx
 mov ds,ax
-cmp dword [current_sp_32],0
+cmp dword [where_return],0
 jz mustreal
 
 ; must return to pmode
-mov ax,stack32_idx
-mov ss,ax
 mov ax,data32_idx
 mov ds,ax
-mov esp,[current_sp_32]
 iretd
 
 mustreal:
@@ -86,17 +83,19 @@ start32_3a: ; linear
 	; jump first to the 16-bit code segment to clear the CS from 32-bit
 	JMP code16_idx:F_GoingBackFrom3
 
-start32_3:
+start32_3: ; segmented
 	cli
 	mov ax,data32_idx
 	mov ds,ax
+	linear ebp,esp,STACK_SEGMENT
+	mov esp,ebp
 	mov ax,stack32_idx
-	mov sp,stack32_end
 	mov ss,ax
 	sti
 
 	; EDX = linear address of far function
 	linear eax,start32_3a,CODE32
+	push word 0
 	push word flatcode32_idx
 	push eax
 	retf

@@ -11,7 +11,6 @@ jnz F_Handler50_No3
 cli
 mov ax,DATA16
 mov ds,ax
-mov [current_sp_16],sp
 lidt fword [idt_PM_start]
 mov ebx,3
 mov eax,cr0
@@ -26,10 +25,11 @@ F_GoingBackFrom3: ; PM here 16 bit
 	mov cr0,eax
 	mov ax,DATA16
 	mov ds,ax
-	mov ax,[current_sp_16]
-	xor esp,esp
-	mov sp,ax
-	mov ax,STACK16
+	xor eax,eax
+	mov ax,STACK_SEGMENT
+	shl eax,4
+	sub esp,eax
+	mov ax,STACK_SEGMENT
 	mov ss,ax
 	lidt fword [save_rm_idt]
 	sti

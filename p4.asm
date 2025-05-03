@@ -10,7 +10,6 @@ jnz P_Handler50_No4
 cli
 mov ax,data32_idx
 mov ds,ax
-mov [current_sp_32],esp
 jmp code32_idx:start32_4
 
 

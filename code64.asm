@@ -13,13 +13,13 @@ iretq
 Start64:
 
 xor rax,rax
+mov ax,stack64_idx
+mov ss,ax
 nop
 nop
 nop
 nop
-mov rsp,STACK64
-shl rsp,4
-add rsp,stack64_end
+
 ; set the interrupts
 linear rax,idt_LM_start,DATA16
 lidt [rax]

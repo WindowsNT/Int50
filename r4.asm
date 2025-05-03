@@ -11,10 +11,8 @@ jnz F_Handler50_No4
 cli
 mov ax,DATA32
 mov ds,ax
-mov dword [current_sp_32],0
 mov ax,DATA16
 mov ds,ax
-mov [current_sp_16],sp
 mov ebx,4
 mov eax,cr0
 or eax,1

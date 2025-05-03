@@ -23,10 +23,7 @@ and eax,0FFFFFFFEh
 mov cr0,eax
 jmp far CODE16:F_Handler50_2_Return
 F_Handler50_2_Return:
-mov ax,STACK16
-mov ss,ax
 sti
-
 
 ; Prepare ACPI
 cmp dx,1

@@ -33,14 +33,14 @@ PrepareGDT16:
 
 	gdt_initialize32 0,code64_descriptor
 	gdt_initialize32 0,data64_descriptor
+	gdt_initialize32 0,stack64_descriptor
 	gdt_initialize32 CODE32,code32_descriptor
 	gdt_initialize32 0,flatcode32_descriptor
 	gdt_initialize32 DATA32,data32_descriptor
 	gdt_initialize32 0,flatdata32_descriptor
-	gdt_initialize32 STACK32,stack32_descriptor
+	gdt_initialize32 0,flatstack32_descriptor
 	gdt_initialize32 CODE16,code16_descriptor
 	gdt_initialize32 DATA16,data16_descriptor
-	gdt_initialize32 STACK16,stack16_descriptor
 
 	; Set gdt ptr
 	linear eax,dummy_descriptor,DATA16

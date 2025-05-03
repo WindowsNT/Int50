@@ -97,9 +97,7 @@
     <None Include="r6.asm" />
     <None Include="runx.bat" />
     <None Include="code16.asm" />
-    <None Include="stack16.asm" />
-    <None Include="stack32.asm" />
-    <None Include="stack64.asm" />
+    <None Include="stack.asm" />
     <None Include="startbochs.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

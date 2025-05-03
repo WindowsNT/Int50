@@ -1,11 +1,9 @@
 FORMAT MZ
 HEAP 0
 include "macros.asm"
-include "stack64.asm"
-include "stack32.asm"
+include "stack.asm"
 include "data64.asm"
 include "data32.asm"
-include "stack16.asm"
 include "data16.asm"
 include "code64.asm"
 include "code32.asm"
@@ -74,8 +72,8 @@ start16:
 	mov ax,DATA16
 	mov ds,ax
 
-	mov ax,STACK16
-	mov sp,stack16_end
+	mov ax,STACK_SEGMENT
+	mov sp,stack_end
 	mov ss,ax
 
 	call far CODE16:F_InstallVector50
@@ -94,6 +92,18 @@ start16:
 	mov dx,1 ; and init acpi
 	int 50h
 
+; Call a 32-bit proc
+	mov eax,3
+	linear edx,a_proc_32,U32
+	int 50h
+
+; Call a 64-bit proc
+	mov eax,4
+	xor ecx,ecx
+	linear edx,a_proc_64,U64
+	int 50h
+
+
  ; A thread
 	mov eax,5
 	linear edx,Thread16_1,U16
@@ -103,17 +113,6 @@ start16:
 	MOV CX,100
 	MOV DX,10*1000 
 	INT 15H
-
-; Call a far proc
-	mov eax,3
-	linear edx,a_proc_32,U32
-	int 50h
-
-; Call a long proc
-	mov eax,4
-	xor ecx,ecx
-	linear edx,a_proc_64,U64
-	int 50h
 
 ; Message
 	mov ax,0x0900
