@@ -61,15 +61,21 @@ wrmsr ; Write EFER.
 
 ; If we have saved ESP, we go back to 32-bit PM
 ; else rM
-;mov ax,data32_idx
-;mov ds,ax
-;cmp dword [current_sp_32],0
-;jz mustreal
+mov ax,data32_idx
+mov ds,ax
+cmp dword [current_sp_32],0
+jz mustreal
 
-;mustreal:
+; must return to pmode
+mov ax,stack32_idx
+mov ss,ax
+mov ax,data32_idx
+mov ds,ax
+mov esp,[current_sp_32]
+iretd
+
+mustreal:
 JMP code16_idx:F_GoingBackFrom3
-
-
 
 
 ; Function 3 : Execute 32-bit linear proc
