@@ -1,0 +1,5 @@
+USE32
+
+SEGMENT DATA32 USE32
+
+current_sp_32 dd 0	

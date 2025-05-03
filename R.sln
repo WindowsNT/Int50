@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "R", "R.vcxproj", "{B1B24582-790B-4CEA-9006-A556AD12C56A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Bochs|x64 = Bochs|x64
+		Bochs|x86 = Bochs|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1B24582-790B-4CEA-9006-A556AD12C56A}.Bochs|x64.ActiveCfg = Bochs|x64
+		{B1B24582-790B-4CEA-9006-A556AD12C56A}.Bochs|x64.Build.0 = Bochs|x64
+		{B1B24582-790B-4CEA-9006-A556AD12C56A}.Bochs|x86.ActiveCfg = Bochs|Win32
+		{B1B24582-790B-4CEA-9006-A556AD12C56A}.Bochs|x86.Build.0 = Bochs|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89DF2E44-D4AF-4BE8-A270-D9018D8ACA08}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{e008e17e-6c45-4149-9d5a-8346b3966c97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\16">
+      <UniqueIdentifier>{b39b4e16-efb7-4be0-8a7a-dd175f7f2026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\BAT">
+      <UniqueIdentifier>{7c2608ed-b1bb-4c25-9d2c-3e7ea2f1c0b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Data">
+      <UniqueIdentifier>{54b89464-7733-478e-a845-cbde4410d1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\32">
+      <UniqueIdentifier>{8b750ff8-9926-436b-96fa-29eddd79f6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\64">
+      <UniqueIdentifier>{8ab732b8-3ed4-46ca-a677-5fe10bacf039}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="all.asm">
+      <Filter>Common</Filter>
+    </None>
+    <None Include="code16.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="build.bat">
+      <Filter>Common\BAT</Filter>
+    </None>
+    <None Include="startbochs.bat">
+      <Filter>Common\BAT</Filter>
+    </None>
+    <None Include="bochsrc.bxrc">
+      <Filter>Common\BAT</Filter>
+    </None>
+    <None Include="runx.bat">
+      <Filter>Common\BAT</Filter>
+    </None>
+    <None Include="Dos622.img">
+      <Filter>Common\Data</Filter>
+    </None>
+    <None Include="r1.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="data16.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="stack16.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="macros.asm">
+      <Filter>Common</Filter>
+    </None>
+    <None Include="r2.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="code32.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="data32.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="stack32.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="r0.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="r3.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="p1.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="stack64.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="data64.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="code64.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="p0.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="r4.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="l0.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="l1.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="p4.asm">
+      <Filter>Common\32</Filter>
+    </None>
+  </ItemGroup>
+</Project>
