@@ -290,49 +290,6 @@ VMXInit2:
 RET
 
 
-; ---------------- Host Start ----------------
-VMX_Host:
-	linear rbx,vmt1,VMX_DATA
-	mov byte [rbx],0
-
-	linear rbx,vmt1,VMX_DATA
-	mov byte [rbx],1
-
-	; Init structures
-	call VMX_Init_Structures
-
-	; Enable
-	call VMX_Enable
-
-    ; Real mode guest (unrestricted)
-	call VMXInit  
-	call VMX_InitializeEPT
-	xor rdx,rdx
-	bts rdx,1
-	bts rdx,7
-	call VMX_Initialize_VMX_Controls
-	linear rcx,VMX_VMExit,CODE64
-	call VMX_Initialize_Host
-	mov r9,VMX16
-	mov r10,StartVM
-	call VMX_Initialize_UnrestrictedGuest
-	call VMXInit2
-
-
-	; Launch it!!
-	xchg bx,bx
-	VMLAUNCH
-
-	; If we get here, VMLAUNCH failed
-
-	; Disable
-	call VMX_Disable
-
-RET
-
-
-
-
 
 
 
@@ -479,6 +436,49 @@ VMX_Initialize_UnrestrictedGuest:
 	vmwrite rbx,rax
 
 RET
+
+
+; ---------------- Host Start ----------------
+VMX_Host:
+	linear rbx,vmt1,VMX_DATA
+	mov byte [rbx],0
+
+	linear rbx,vmt1,VMX_DATA
+	mov byte [rbx],1
+
+	; Init structures
+	call VMX_Init_Structures
+
+	; Enable
+	call VMX_Enable
+
+    ; Real mode guest (unrestricted)
+	call VMXInit  
+	call VMX_InitializeEPT
+	xor rdx,rdx
+	bts rdx,1
+	bts rdx,7
+	call VMX_Initialize_VMX_Controls
+	linear rcx,VMX_VMExit,CODE64
+	call VMX_Initialize_Host
+	mov r9,VMX16
+	mov r10,StartVM
+	call VMX_Initialize_UnrestrictedGuest
+	call VMXInit2
+
+
+	; Launch it!!
+	xchg bx,bx
+	VMLAUNCH
+
+	; If we get here, VMLAUNCH failed
+
+	; Disable
+	call VMX_Disable
+
+RET
+
+
 
 ; RDX linear to run
 VMX_Run:

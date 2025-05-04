@@ -19,9 +19,6 @@ jnz .nbx0
 	XOR RAX,RAX
 	BTC ECX,5
 	JNC .f
-
-
-
 	MOV RAX,1
 	.f:
 	iretq

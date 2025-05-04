@@ -19,12 +19,9 @@ a_virtual_64:
 	nop
 	ud2
 
-a_proc_64:
+a_proc_64v:
 	nop
 	nop
-	xor rax,rax
-
-	; Init
 	mov eax,1
 	int 50h
 
@@ -39,6 +36,17 @@ a_proc_64:
 	linear rdx,a_virtual_64,MY_CODE
 	int 50h ;
 
+	ret
+
+
+a_proc_64:
+	nop
+	nop
+	xor rax,rax
+
+	; Init
+	mov eax,1
+	int 50h
 
 	; Call real mode proc from pmode
 	mov eax,7
@@ -199,6 +207,13 @@ start16:
 	 mov eax,6
 	 mov ebx,3
 	 int 0x50
+
+; A 64-bit proc that starts VM
+	mov eax,4
+	xor ecx,ecx
+	linear edx,a_proc_64v,MY_CODE
+	int 50h
+
 
 ; Message
 	mov ax,MY_DATA
