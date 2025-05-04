@@ -67,3 +67,8 @@ linear edx,Thread16_1,MY_CODE
 mov ebx,1
 int 50h
 ```
+
+A thread must begin with 4096 NOPs for call alignment
+```asm
+db 4096 dup (144) ; fill NOPs for alignment
+```
