@@ -1,6 +1,7 @@
+;SEGMENT CODE32 USE32
+;ORG 0
+CODE32 = CODE64
 USE32
-SEGMENT CODE32 USE32
-ORG 0
 
 include "ipi32.asm"
 include "p0.asm"

@@ -1,7 +1,7 @@
 ; --------------------------------------- 64 bit Code ---------------------------------------
-SEGMENT CODE64 USE64
+SEGMENT DMMI_CODE USE64
 ORG 0h
-
+CODE64 = DMMI_CODE
 
 include "l0.asm"
 L_Handler50:
