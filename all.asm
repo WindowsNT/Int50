@@ -2,15 +2,19 @@ FORMAT MZ
 HEAP 0
 include "macros.asm"
 include "stack.asm"
-include "data64.asm"
-include "data32.asm"
-include "data16.asm"
+include "dmmi_data.asm"
 include "code64.asm"
 include "code32.asm"
 include "code16.asm"
 
+SEGMENT MY_DATA
+mymut_1 db 0xFF
+msg_hello1 db "Hello",0xd,0xa,"$"
+msg_hello2 db "Hello from thread",0xd,0xa,"$"
+
+
+SEGMENT U64
 USE64
-SEGMENT U64 USE64
 a_proc_64:
 	nop
 	nop
@@ -21,9 +25,8 @@ a_proc_64:
 	xor rax,rax
 	ret
 
+SEGMENT U32
 USE32
-
-SEGMENT U32 USE32
 a_proc_32:
     nop
 	nop
@@ -35,11 +38,10 @@ a_proc_32:
 	linear edx,a_proc_64,U64
 	int 50h
 	ret
+
+
+SEGMENT U16
 USE16
-
-
-
-SEGMENT U16 USE16
 ORG 0
 
 Thread16_1:
@@ -49,22 +51,28 @@ Thread16_1:
 	mov ax,STACK_SEGMENT
 	mov ss,ax
 	mov sp,stack_t2_end
-	mov ax,DATA16
-	mov ds,ax
 
-
-	mov ax,DATA16
+	; Show message
+	mov ax,MY_DATA
 	mov ds,ax
 	mov dx, msg_hello2
 	mov ax,0x0900
 	int 21h
+
+	; Unlock mutex
+	mov ax,MY_DATA
+	mov es,ax
+	mov di,mymut_1
+	mov eax,6
+	mov ebx,2
+	int 0x50
+
+	; Thread end
 	hlt
 	hlt
 
 start16:
 	CLI
-	mov ax,DATA16
-	mov ds,ax
 
 	mov ax,STACK_SEGMENT
 	mov sp,stack_end
@@ -73,8 +81,6 @@ start16:
 	call far CODE16:F_InstallVector50
 	STI
 
-	mov ax,DATA16
-	mov ds,ax
 
 
 ; Initialize 
@@ -90,7 +96,6 @@ start16:
 	mov eax,3
 	linear edx,a_proc_32,U32
 	int 50h
-
 ; Call a 64-bit proc
 	mov eax,4
 	xor ecx,ecx
@@ -99,18 +104,39 @@ start16:
 
 
  ; A thread
-	mov eax,5
-	linear edx,Thread16_1,U16
-	mov ebx,1
-	int 50h
-	MOV AH,86H
-	MOV CX,100
-	MOV DX,10*1000 
-	INT 15H
+
+	 ; Create the mutex
+	 mov ax,MY_DATA
+	 mov es,ax
+	 mov di,mymut_1
+	 mov eax,6
+	 mov ebx,0
+	 int 0x50
+
+	 ; Lock it
+	 mov eax,6
+	 mov ebx,1
+	 int 0x50
+
+	 ; run it
+	 mov eax,5
+	 linear edx,Thread16_1,U16
+	 mov ebx,1
+	 int 50h
+
+	 ; wait
+	 mov ax,MY_DATA
+	 mov es,ax
+	 mov di,mymut_1
+	 mov eax,6
+	 mov ebx,3
+	 int 0x50
 
 ; Message
+	mov ax,MY_DATA
+	mov ds,ax
 	mov ax,0x0900
-	mov dx, msg_hello
+	mov dx, msg_hello1
 	int 21h
 
 

@@ -78,9 +78,7 @@
     <None Include="build.bat" />
     <None Include="code32.asm" />
     <None Include="code64.asm" />
-    <None Include="data16.asm" />
-    <None Include="data32.asm" />
-    <None Include="data64.asm" />
+    <None Include="dmmi_data.asm" />
     <None Include="Dos622.img" />
     <None Include="l0.asm" />
     <None Include="l1.asm" />

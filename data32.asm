@@ -1,5 +1,0 @@
-USE32
-
-SEGMENT DATA32 USE32
-
-where_return db 0

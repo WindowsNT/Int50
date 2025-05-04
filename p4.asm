@@ -8,9 +8,10 @@ cmp ax,4
 jnz P_Handler50_No4
 
 cli
-mov ax,data32_idx
+mov ax,flatdata32_idx
 mov ds,ax
-mov byte [ds:where_return],1
+linear eax,long_from_protected,DMMI_DATA
+mov byte [ds:eax],1
 jmp code32_idx:start32_4_from_pm_already
 
 

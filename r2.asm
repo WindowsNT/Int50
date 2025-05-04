@@ -13,7 +13,7 @@ or eax,1
 mov cr0,eax
 mov eax,1
 jmp $ + 2
-mov ax,data32_idx
+mov ax,flatdata32_idx
 mov fs, ax
 mov gs, ax
 mov ds, ax

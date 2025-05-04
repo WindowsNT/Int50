@@ -27,7 +27,7 @@ ret
 
 PrepareGDT16:
 	
-	mov ax,DATA16
+	mov ax,DMMI_DATA
 	mov ds,ax
 	call EnableA20
 
@@ -36,14 +36,13 @@ PrepareGDT16:
 	gdt_initialize32 0,stack64_descriptor
 	gdt_initialize32 CODE32,code32_descriptor
 	gdt_initialize32 0,flatcode32_descriptor
-	gdt_initialize32 DATA32,data32_descriptor
 	gdt_initialize32 0,flatdata32_descriptor
 	gdt_initialize32 0,flatstack32_descriptor
 	gdt_initialize32 CODE16,code16_descriptor
-	gdt_initialize32 DATA16,data16_descriptor
+	gdt_initialize32 DMMI_DATA,data16_descriptor
 
 	; Set gdt ptr
-	linear eax,dummy_descriptor,DATA16
+	linear eax,dummy_descriptor,DMMI_DATA
 	mov dword [gdt_ptr],eax
 
 	; Set GDT
@@ -53,7 +52,7 @@ PrepareGDT16:
 
 PrepareIDTFor32:
 	
-	mov ax,DATA16
+	mov ax,DMMI_DATA
 	mov ds,ax
 	sidt fword [save_rm_idt]
 
@@ -80,7 +79,7 @@ PrepareIDTFor32:
     mov dword [idt_PM_ptr], interruptsall       ; linear address of IDT base
 	
 	xor eax,eax
-	mov     ax,DATA16
+	mov     ax,DMMI_DATA
 	shl     eax,4
 	add     ax,interruptsall
 	mov     [idt_PM_ptr],eax
@@ -91,7 +90,7 @@ PrepareIDTFor32:
 
 PrepareIDTFor64:
 	
-	mov ax,DATA16
+	mov ax,DMMI_DATA
 	mov ds,ax
 	push es
 	push ds
@@ -116,7 +115,7 @@ PrepareIDTFor64:
     mov dword [idt_LM_ptr], interruptsall64       ; linear address of IDT base
 	
 	xor eax,eax
-	mov     ax,DATA16
+	mov     ax,DMMI_DATA
 	shl     eax,4
 	add     ax,interruptsall64
 	mov     [idt_LM_ptr],eax
@@ -330,7 +329,7 @@ RETF
 
 PrepareACPI:
 
-	mov ax,DATA16
+	mov ax,DMMI_DATA
 	mov ds,ax
 	push cs
 	call GetMyApic16f
@@ -380,7 +379,7 @@ macro qlock16 trg,del = -1
 	push ds
 	push di
 	push ecx
-	MOV DI,DATA16
+	MOV DI,DMMI_DATA
 	MOV DS,DI
 	MOV DI,trg
 	dec byte [ds:di]
@@ -393,7 +392,7 @@ macro qunlock16 trg
 	{
 	push ds
 	push di
-	MOV DI,DATA16
+	MOV DI,DMMI_DATA
 	MOV DS,DI
 	MOV DI,trg
 	cmp byte [ds:di],0xFF
@@ -405,10 +404,10 @@ macro qunlock16 trg
 	}
 
 qwait16:
-	; ax = target mutex in data16
+	; ax = target mutex in DMMI_DATA
 	push ds
 	push di
-	MOV DI,DATA16
+	MOV DI,DMMI_DATA
 	MOV DS,DI
 	MOV DI,ax
 
@@ -424,11 +423,11 @@ qwait16:
 retf
 
 qwaitlock16:
-	; ax = target mutex in data16
+	; ax = target mutex in DMMI_DATA
 	push bx
 	push ds
 	push di
-	MOV DI,DATA16
+	MOV DI,DMMI_DATA
 	MOV DS,DI
 	MOV DI,ax
 
@@ -459,7 +458,7 @@ retf
 SendSIPIf:
 	PUSHAD
 	PUSH DS
-	mov cx,DATA16
+	mov cx,DMMI_DATA
 	mov ds,cx
 		
 	XOR ECX,ECX

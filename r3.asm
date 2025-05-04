@@ -9,7 +9,7 @@ jnz F_Handler50_No3
 
 ; Enter PM
 cli
-mov ax,DATA16
+mov ax,DMMI_DATA
 mov ds,ax
 lidt fword [idt_PM_start]
 mov ebx,3
@@ -23,7 +23,7 @@ F_GoingBackFrom3: ; PM here 16 bit
 	mov eax,cr0
 	and eax,0fffffffeh
 	mov cr0,eax
-	mov ax,DATA16
+	mov ax,DMMI_DATA
 	mov ds,ax
 	xor eax,eax
 	mov ax,STACK_SEGMENT

@@ -9,10 +9,6 @@ jnz F_Handler50_No4
 
 ; Enter PM
 cli
-mov ax,DATA32
-mov ds,ax
-mov ax,DATA16
-mov ds,ax
 mov ebx,4
 mov eax,cr0
 or eax,1

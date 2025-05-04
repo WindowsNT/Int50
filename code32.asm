@@ -16,7 +16,7 @@ cli
 linear ebp,esp,STACK_SEGMENT
 mov esp,ebp
 start32_4_from_pm_already:
-mov ax,data32_idx
+mov ax,flatdata32_idx
 mov ds,ax
 mov ax,stack32_idx
 
@@ -62,14 +62,15 @@ wrmsr ; Write EFER.
 
 ; If we have saved where_return, we go back to 32-bit PM
 ; else rM
-mov ax,data32_idx
+mov ax,flatdata32_idx
 mov ds,ax
-cmp byte [where_return],0
+linear eax,long_from_protected,DMMI_DATA
+cmp byte [eax],0
 jz mustreal
 
 ; must return to pmode
-mov byte [where_return],0
-mov ax,data32_idx
+mov byte [eax],0
+mov ax,flatdata32_idx
 mov ds,ax
 mov ax,stack32_idx
 mov ss,ax
@@ -89,7 +90,7 @@ start32_3a: ; linear
 
 start32_3: ; segmented
 	cli
-	mov ax,data32_idx
+	mov ax,flatdata32_idx
 	mov ds,ax
 	linear ebp,esp,STACK_SEGMENT
 	mov esp,ebp

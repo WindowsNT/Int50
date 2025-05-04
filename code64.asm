@@ -21,7 +21,7 @@ nop
 nop
 
 ; set the interrupts
-linear rax,idt_LM_start,DATA16
+linear rax,idt_LM_start,DMMI_DATA
 lidt [rax]
 sti
 
