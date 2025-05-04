@@ -22,6 +22,13 @@ a_proc_64:
 	mov eax,1
 	int 50h
 
+	; Is VMX supported?
+	mov eax,10
+	mov ebx, 0
+	xchg bx,bx
+	int 50h ; should return RAX = 1
+
+
 	; Call real mode proc from pmode
 	mov eax,7
 	mov cx,MY_CODE

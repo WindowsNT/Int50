@@ -96,5 +96,8 @@
     <None Include="Readme.md">
       <Filter>Common</Filter>
     </None>
+    <None Include="l10.asm">
+      <Filter>Common\64</Filter>
+    </None>
   </ItemGroup>
 </Project>
