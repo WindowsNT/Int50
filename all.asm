@@ -13,6 +13,12 @@ msg_hello3 db "Hello from thread",0xd,0xa,"$"
 
 SEGMENT MY_CODE
 USE64
+
+a_virtual_64:
+	nop
+	nop
+	ud2
+
 a_proc_64:
 	nop
 	nop
@@ -26,6 +32,12 @@ a_proc_64:
 	mov eax,10
 	mov ebx, 0
 	int 50h ; should return RAX = 1
+
+	; Run VMX
+	mov eax,10
+	mov ebx, 1
+	linear rdx,a_virtual_64,MY_CODE
+	int 50h ;
 
 
 	; Call real mode proc from pmode

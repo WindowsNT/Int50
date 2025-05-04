@@ -29,7 +29,6 @@ USE64
 
 ; ---------------- Init the structures ----------------
 VMX_Init_Structures:
-
 	 ; Read MSR
 	 xor eax,eax
 	 mov ecx,0480h
@@ -482,4 +481,13 @@ VMX_Initialize_UnrestrictedGuest:
 ;	mov ebx,0x6814 ; TR base
 ;	vmwrite rbx,rax
 
+RET
+
+; RDX linear to run
+VMX_Run:
+
+call VMX_Init_Structures
+call VMX_Enable
+
+call VMX_Disable
 RET

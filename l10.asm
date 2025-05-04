@@ -20,12 +20,20 @@ jnz .nbx0
 	BTC ECX,5
 	JNC .f
 
+
+
 	MOV RAX,1
 	.f:
 	iretq
 .nbx0:
 
+; BX = 1, Run VM
+cmp bx,1
+jnz .nbx1
 
+linear rax,VMX_Run,VMXFUNCTIONS
+call rax
 
+.nbx1:
 iretq
 L_Handler50_No10:
