@@ -57,4 +57,13 @@ mov cx,MY_CODE
 mov dx,Func_Real
 int 50h
 ```
-R
+
+* Start 16-bit thread (Available from real mode)
+EBX = cpu index
+EDX = linear address of the thread proc
+```asm
+mov eax,5
+linear edx,Thread16_1,MY_CODE
+mov ebx,1
+int 50h
+```
