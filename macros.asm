@@ -6,6 +6,14 @@ macro linear reg,trg,seg
 	shl reg,4
 	add reg,trg
 	}
+
+macro atlinear reg,trg,seg
+	{
+	mov reg,seg
+	shl reg,4
+	add reg,trg
+	mov reg,[reg]
+	}
     
 struc GDT_STR s0_15,b0_15,b16_23,flags,access,b24_31
         {
@@ -55,3 +63,29 @@ macro gdt_initialize32 a_seg,a_desc
 }
 
 
+macro vmw16 code,value
+{
+	mov ebx,code
+	xor eax,eax
+	mov ax,value
+	vmwrite ebx,eax
+}
+
+macro vmw32 code,value
+{
+	mov ebx,code
+	mov eax,value
+	vmwrite ebx,eax
+}
+macro vmw64 code,value
+{
+	mov rbx,code
+	mov rax,value
+	vmwrite rbx,rax
+}
+
+macro vmr r,code
+{
+	mov rbx,code
+	vmread r,rbx
+}

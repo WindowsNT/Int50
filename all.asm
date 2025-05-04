@@ -25,7 +25,6 @@ a_proc_64:
 	; Is VMX supported?
 	mov eax,10
 	mov ebx, 0
-	xchg bx,bx
 	int 50h ; should return RAX = 1
 
 
