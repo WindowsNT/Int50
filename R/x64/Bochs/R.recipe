@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>F:\TOOLS\ASM\full3\x64\Bochs\R</FullPath>
+      <FullPath>F:\TOOLS\ASM\Int50\x64\Bochs\R</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

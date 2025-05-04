@@ -4,16 +4,16 @@
           1 file(s) copied.
           1 file(s) copied.
   Selected media type is CDR with value 2
-  Adding item to the target image: F:\TOOLS\ASM\full3\cd\all.exe
-  Adding item to the target image: F:\TOOLS\ASM\full3\cd\runx.bat
-  Target image (F:\TOOLS\ASM\full3\d.iso) has been created
+  Adding item to the target image: F:\TOOLS\ASM\Int50\cd\all.exe
+  Adding item to the target image: F:\TOOLS\ASM\Int50\cd\runx.bat
+  Target image (F:\TOOLS\ASM\Int50\d.iso) has been created
   
   
-      Directory: F:\TOOLS\ASM\full3
+      Directory: F:\TOOLS\ASM\Int50
   
   
   Mode                 LastWriteTime         Length Name                                                                 
   ----                 -------------         ------ ----                                                                 
-  -a----         04-May-25     11:59        1245184 d.iso                                                                
+  -a----         04-May-25     12:18        1245184 d.iso                                                                
   
   
