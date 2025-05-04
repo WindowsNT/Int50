@@ -27,6 +27,12 @@ a_proc_32:
     nop
 	nop
 
+	; Start a thread from PM
+	 mov eax,5
+	 linear edx,Thread16_2,U16
+	 mov ebx,1
+	 int 50h
+
 	; Call a long proc from pmode
 	mov eax,4
 	xor ecx,ecx
@@ -38,6 +44,12 @@ a_proc_32:
 SEGMENT U16
 USE16
 ORG 0
+
+Thread16_2:
+	db 4096 dup (144) ; fill NOPs for alignment
+	xchg bx,bx
+	hlt
+	hlt
 
 Thread16_1:
 	db 4096 dup (144) ; fill NOPs for alignment

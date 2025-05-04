@@ -3,6 +3,7 @@ SEGMENT CODE16 USE16
 ORG 0h
 
 
+include "ipi16.asm"
 include "r0.asm"
 
 F_Handler50:

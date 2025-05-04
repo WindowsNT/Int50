@@ -2,11 +2,13 @@ USE32
 SEGMENT CODE32 USE32
 ORG 0
 
+include "ipi32.asm"
 include "p0.asm"
 
 P_Handler50:
 include "p1.asm"
 include "p4.asm"
+include "p5.asm"
 iretd
 
 
