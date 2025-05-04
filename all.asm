@@ -11,6 +11,7 @@ SEGMENT MY_DATA
 mymut_1 db 0xFF
 msg_hello1 db "Hello",0xd,0xa,"$"
 msg_hello2 db "Hello from thread",0xd,0xa,"$"
+msg_hello3 db "Hello from thread",0xd,0xa,"$"
 
 
 SEGMENT U64
@@ -19,6 +20,17 @@ a_proc_64:
 	nop
 	nop
 	xor rax,rax
+
+	; Init
+	mov eax,1
+	int 50h
+
+	; Call real mode proc from pmode
+	mov eax,7
+	mov cx,U16
+	mov dx,Func_Real
+	int 50h
+
 	ret
 
 SEGMENT U32
@@ -33,6 +45,12 @@ a_proc_32:
 	 mov ebx,1
 	 int 50h
 
+	; Call real mode proc from pmode
+	mov eax,7
+	mov cx,U16
+	mov dx,Func_Real
+	int 50h
+
 	; Call a long proc from pmode
 	mov eax,4
 	xor ecx,ecx
@@ -44,6 +62,18 @@ a_proc_32:
 SEGMENT U16
 USE16
 ORG 0
+
+Func_Real:
+	nop
+	nop
+	push ds
+	mov ax,MY_DATA
+	mov ds,ax
+	mov ax,0x0900
+	mov dx, msg_hello3
+	int 21h
+	pop ds
+	retf
 
 Thread16_2:
 	db 4096 dup (144) ; fill NOPs for alignment

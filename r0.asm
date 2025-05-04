@@ -39,6 +39,9 @@ PrepareGDT16:
 	gdt_initialize32 0,flatdata32_descriptor
 	gdt_initialize32 0,flatstack32_descriptor
 	gdt_initialize32 CODE16,code16_descriptor
+	gdt_initialize32 CODE32,code32as16_descriptor
+	gdt_initialize32 CODE64,code64as32_descriptor
+	gdt_initialize32 CODE64,code64as16_descriptor
 	gdt_initialize32 DMMI_DATA,data16_descriptor
 
 	; Set gdt ptr
@@ -134,6 +137,16 @@ PrepareLong:
 	linear eax,Start64,CODE64
 	mov [es:edi],eax
 	pop es
+
+	; And the return if transition to RM
+	push es
+	mov ax,CODE64
+	mov es,ax
+	mov edi,LinearAddressOfReturn64
+	linear eax,tl4lm,CODE64
+	mov [es:edi],eax
+	pop es
+
 	ret
 
 

@@ -13,6 +13,9 @@ flatdata32_descriptor  GDT_STR 0ffffh,0,0,92h,0cfh,0 ; 4GB 32-bit data,   92h = 
 code64_descriptor  GDT_STR 0ffffh,0,0,9ah,0afh,0 ; 16TB 64-bit code, 08cfh access = 01001111b = Big,64bit (0), 1111 more size
 data64_descriptor  GDT_STR 0ffffh,0,0,92h,0afh,0 ; 16TB 64-bit data, 08cfh access = 10001111b = Big,64bit (0), 1111 more size
 stack64_descriptor  GDT_STR 0ffffh,0,0,92h,0afh,0 ; 16TB 64-bit data, 08cfh access = 10001111b = Big,64bit (0), 1111 more size
+code32as16_descriptor  GDT_STR 0ffffh,0,0,9ah,0,0    ; 64k 16-bit code
+code64as32_descriptor  GDT_STR 0ffffh,0,0,9ah,0cfh,0 ; 4GB 32-bit code , 9ah = 10011010b = Present, DPL 00,No System, Code Exec/Read. 0cfh access = 11001111b = Big,32bit,<resvd 0>,1111 more size
+code64as16_descriptor  GDT_STR 0ffffh,0,0,9ah,0,0    ; 64k 16-bit code
 gdt_size = $-(dummy_descriptor)
 
 dummy_idx       = 0h    ; dummy selector
@@ -25,6 +28,9 @@ flatdata32_idx  =       30h             ; offset of 32-bit data segment in GDT
 code64_idx      =       38h             ; offset of 64-bit code segment in GDT
 data64_idx      =       40h             ; offset of 64-bit data segment in GDT
 stack64_idx      =      48h             ; offset of 64-bit data segment in GDT
+code32as16_idx      =   50h             ; offset of 16-bit code segment in GDT
+code64as32_idx      =   58h             ; offset of 16-bit code segment in GDT
+code64as16_idx      =   60h             ; offset of 16-bit code segment in GDT
 
 
 ; --------------------------------------- RM IDT ---------------------------------------

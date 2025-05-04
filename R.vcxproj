@@ -84,10 +84,12 @@
     <None Include="ipi32.asm" />
     <None Include="l0.asm" />
     <None Include="l1.asm" />
+    <None Include="l7.asm" />
     <None Include="p0.asm" />
     <None Include="p1.asm" />
     <None Include="p4.asm" />
     <None Include="p5.asm" />
+    <None Include="p7.asm" />
     <None Include="r0.asm" />
     <None Include="r1.asm" />
     <None Include="r2.asm" />

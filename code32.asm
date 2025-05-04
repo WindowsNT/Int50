@@ -9,6 +9,7 @@ P_Handler50:
 include "p1.asm"
 include "p4.asm"
 include "p5.asm"
+include "p7.asm"
 iretd
 
 
