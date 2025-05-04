@@ -18,10 +18,6 @@ USE64
 a_proc_64:
 	nop
 	nop
-	nop
-	nop 
-	nop
-	nop
 	xor rax,rax
 	ret
 
@@ -29,7 +25,6 @@ SEGMENT U32
 USE32
 a_proc_32:
     nop
-	nop
 	nop
 
 	; Call a long proc from pmode
@@ -59,6 +54,26 @@ Thread16_1:
 	mov ax,0x0900
 	int 21h
 
+	; Initialize Int 50
+	mov eax,1
+	int 0x50
+
+	; Enter unreal, no ACPI init
+	mov eax,2
+	xor edx,edx
+	int 50h
+
+	; Call a 32-bit proc
+	mov eax,3
+	linear edx,a_proc_32,U32
+	int 50h
+
+	; Call a 64-bit proc
+	mov eax,4
+	xor ecx,ecx
+	linear edx,a_proc_64,U64
+	int 50h
+
 	; Unlock mutex
 	mov ax,MY_DATA
 	mov es,ax
@@ -82,7 +97,6 @@ start16:
 	STI
 
 
-
 ; Initialize 
 	mov eax,1
 	int 50h
@@ -96,6 +110,7 @@ start16:
 	mov eax,3
 	linear edx,a_proc_32,U32
 	int 50h
+
 ; Call a 64-bit proc
 	mov eax,4
 	xor ecx,ecx
