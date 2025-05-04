@@ -7,10 +7,10 @@ romimage: file="g:\progs\bochs\BIOS-bochs-latest", address=0x00000000, options=n
 vgaromimage: file="g:\progs\bochs\VGABIOS-lgpl-latest.bin"
 boot: floppy
 floppy_bootsig_check: disabled=0
-floppya: type=1_44, 1_44="F:\TOOLS\ASM\full3\Dos622.img", status=inserted, write_protected=0
+floppya: type=1_44, 1_44="F:\TOOLS\ASM\Int50\Dos622.img", status=inserted, write_protected=0
 # no floppyb
 ata0: enabled=true, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
-ata0-master: type=cdrom, path="F:\TOOLS\ASM\full3\d.iso", status=inserted, model="Generic 1234", biosdetect=auto
+ata0-master: type=cdrom, path="F:\TOOLS\ASM\Int50\d.iso", status=inserted, model="Generic 1234", biosdetect=auto
 ata0-slave: type=none
 ata1: enabled=true, ioaddr1=0x170, ioaddr2=0x370, irq=15
 ata1-master: type=none
