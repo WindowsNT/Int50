@@ -3,9 +3,7 @@ HEAP 0
 include "macros.asm"
 include "stack.asm"
 include "dmmi_data.asm"
-include "code64.asm"
-include "code32.asm"
-include "code16.asm"
+include "dmmi_code.asm"
 
 SEGMENT MY_DATA
 mymut_1 db 0xFF
@@ -13,8 +11,7 @@ msg_hello1 db "Hello",0xd,0xa,"$"
 msg_hello2 db "Hello from thread",0xd,0xa,"$"
 msg_hello3 db "Hello from thread",0xd,0xa,"$"
 
-
-SEGMENT U64
+SEGMENT MY_CODE
 USE64
 a_proc_64:
 	nop
@@ -27,13 +24,12 @@ a_proc_64:
 
 	; Call real mode proc from pmode
 	mov eax,7
-	mov cx,U16
+	mov cx,MY_CODE
 	mov dx,Func_Real
 	int 50h
 
 	ret
 
-SEGMENT U32
 USE32
 a_proc_32:
     nop
@@ -41,28 +37,25 @@ a_proc_32:
 
 	; Start a thread from PM
 	 mov eax,5
-	 linear edx,Thread16_2,U16
+	 linear edx,Thread16_2,MY_CODE
 	 mov ebx,1
 	 int 50h
 
 	; Call real mode proc from pmode
 	mov eax,7
-	mov cx,U16
+	mov cx,MY_CODE
 	mov dx,Func_Real
 	int 50h
 
 	; Call a long proc from pmode
 	mov eax,4
 	xor ecx,ecx
-	linear edx,a_proc_64,U64
+	linear edx,a_proc_64,MY_CODE
 	int 50h
 	ret
 
 
-SEGMENT U16
 USE16
-ORG 0
-
 Func_Real:
 	nop
 	nop
@@ -107,13 +100,13 @@ Thread16_1:
 
 	; Call a 32-bit proc
 	mov eax,3
-	linear edx,a_proc_32,U32
+	linear edx,a_proc_32,MY_CODE
 	int 50h
 
 	; Call a 64-bit proc
 	mov eax,4
 	xor ecx,ecx
-	linear edx,a_proc_64,U64
+	linear edx,a_proc_64,MY_CODE
 	int 50h
 
 	; Unlock mutex
@@ -150,13 +143,13 @@ start16:
 
 ; Call a 32-bit proc
 	mov eax,3
-	linear edx,a_proc_32,U32
+	linear edx,a_proc_32,MY_CODE
 	int 50h
 
 ; Call a 64-bit proc
 	mov eax,4
 	xor ecx,ecx
-	linear edx,a_proc_64,U64
+	linear edx,a_proc_64,MY_CODE
 	int 50h
 
 
@@ -177,7 +170,7 @@ start16:
 
 	 ; run it
 	 mov eax,5
-	 linear edx,Thread16_1,U16
+	 linear edx,Thread16_1,MY_CODE
 	 mov ebx,1
 	 int 50h
 
@@ -201,4 +194,4 @@ start16:
 	mov ax,0x4c00
 	int 21h
 
-entry U16:start16
+entry MY_CODE:start16
