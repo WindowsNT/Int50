@@ -1,4 +1,30 @@
+include "guest16.asm"
+
+SEGMENT VMX_DATA
+ORG 0
+; VMX DATA
+PhysicalEptOffset64 dq 0
+
+ALIGN 4096
+VMXStructureData db 20000 dup (0)
+VMXStructureData1 dq 0 ; Used for VMXON
+VMXStructureData2 dq 0 ; First VMCS
+VMXStructureData3 dq 0 ; Second VMCS
+VMXRevision dd 0 ; Save Revision here
+VMXStructureSize dd 0 ; Save structure size here
+TempData db 128 dup(0)
+vmt1 db 0 ; existence
+vmt2 db 0 ; protected mode guest
+vmt3 db 0 ; unrestricted guest
+vmm1 db "[VMX] ","$"
+vmm2 db "[VMX Launch] ","$"
+
+
+
+
+
 SEGMENT VMXFUNCTIONS
+ORG 0
 USE64
 
 ; ---------------- Init the structures ----------------
@@ -9,16 +35,16 @@ VMX_Init_Structures:
 	 mov ecx,0480h
 	 rdmsr
 
-	 linear ecx,VMXRevision,DMMI_DATA
+	 linear ecx,VMXRevision,VMX_DATA
 	 ; EAX holds the revision
 	 ; EDX lower 13 bits hold the max size
 	 mov [ecx],eax
 	 and edx,8191
-	 linear ecx,VMXStructureSize,DMMI_DATA
+	 linear ecx,VMXStructureSize,VMX_DATA
 	 mov [ecx],edx
 	 ; Initialize 4096 structure datas for VMX
 	 xor eax,eax
-	 mov ax,DMMI_DATA
+	 mov ax,VMX_DATA
 	 shl eax,4 ; physical
 	 Loop5X:
 	 test eax,01fffh
@@ -26,10 +52,10 @@ VMX_Init_Structures:
 	 inc eax
 	 jmp Loop5X
 	 Loop5End:
-	 linear ecx,VMXStructureData1,DMMI_DATA
+	 linear ecx,VMXStructureData1,VMX_DATA
 	 mov dword [ecx],eax
 	 add eax,4096
-	 linear ecx,VMXStructureData2,DMMI_DATA
+	 linear ecx,VMXStructureData2,VMX_DATA
 	 mov dword [ecx],eax
 RET
 
@@ -40,11 +66,11 @@ VMX_Enable:
 	mov cr4,rax
 
     ; Load the revision
-	linear rdi,VMXRevision,DMMI_DATA
+	linear rdi,VMXRevision,VMX_DATA
 	mov ebx,[edi];
 	
 	; Initialize the VMXON region
-	linear rdi,VMXStructureData1,DMMI_DATA
+	linear rdi,VMXStructureData1,VMX_DATA
 	mov rcx,[rdi];  Get address of data1
 	mov rsi,rdi
 	mov rdi,rcx
@@ -119,13 +145,13 @@ VMX_Initialize_Host:
 ;	vmw16 0xC0C,tssd32_idx //*
 
 	; GDTR, IDTR
-	linear rdi,TempData,DMMI_DATA
+	linear rdi,TempData,VMX_DATA
 	sgdt [rdi] ; 10 bytes : 2 limit and 8 item
 	mov rax,[rdi + 2]
 	mov rbx,0x6C0C
 	vmwrite rbx,rax
 
-	linear rdi,TempData,DMMI_DATA
+	linear rdi,TempData,VMX_DATA
 	sidt [rdi] ; 10 bytes : 2 limit and 8 item
 	mov rax,[rdi + 2]
 	mov rbx,0x6C0E
@@ -141,7 +167,7 @@ RET
 
 VMX_InitializeEPT:
 	xor rdi,rdi
-	linear rax,PhysicalEptOffset64,DMMI_DATA
+	linear rax,PhysicalEptOffset64,VMX_DATA
 	mov rdi,[rax]
  
 	; Clear everything
@@ -224,10 +250,10 @@ RET
 VMXInit:
 	
 	; Load the revision
-	atlinear rbx,VMXRevision,DMMI_DATA
+	atlinear rbx,VMXRevision,VMX_DATA
 
 	; Initialize the region
-	linear rdi,VMXStructureData2,DMMI_DATA
+	linear rdi,VMXStructureData2,VMX_DATA
 	mov rcx,[rdi];  Get address of data1
 	mov rsi,rdi
 	mov rdi,rcx
@@ -243,7 +269,7 @@ RET
 VMXInit2:
 
 	; The EPT initialization for the guest
-	linear rax,PhysicalEptOffset64,DMMI_DATA
+	linear rax,PhysicalEptOffset64,VMX_DATA
 	mov rax,[rax]
 	or rax,0 ; Memory Type 0
 	or rax,0x18 ; Page Walk Length 3
@@ -267,10 +293,10 @@ RET
 
 ; ---------------- Host Start ----------------
 VMX_Host:
-	linear rbx,vmt1,DMMI_DATA
+	linear rbx,vmt1,VMX_DATA
 	mov byte [rbx],0
 
-	linear rbx,vmt1,DMMI_DATA
+	linear rbx,vmt1,VMX_DATA
 	mov byte [rbx],1
 
 	; Init structures
@@ -290,9 +316,9 @@ VMX_Host:
 	call VMX_Initialize_VMX_Controls
 	linear rcx,VMX_VMExit,CODE64
 	call VMX_Initialize_Host
-;	mov r9,VMX16
-;	mov r10,StartVM
-;	call VMX_Initialize_UnrestrictedGuest
+	mov r9,VMX16
+	mov r10,StartVM
+	call VMX_Initialize_UnrestrictedGuest
  
  
 	call VMXInit2
