@@ -305,9 +305,7 @@ VMX_Host:
 	call VMX_Enable
 
     ; Real mode guest (unrestricted)
-
-	call VMXInit
-  
+	call VMXInit  
 	call VMX_InitializeEPT
 	xor rdx,rdx
 	bts rdx,1
@@ -318,12 +316,11 @@ VMX_Host:
 	mov r9,VMX16
 	mov r10,StartVM
 	call VMX_Initialize_UnrestrictedGuest
- 
- 
 	call VMXInit2
 
 
 	; Launch it!!
+	xchg bx,bx
 	VMLAUNCH
 
 	; If we get here, VMLAUNCH failed
@@ -452,42 +449,38 @@ VMX_Initialize_UnrestrictedGuest:
 
 
 	; LDT (Dummy)
-;	xor rax,rax
-;	mov ax,ldt_idx
-;	mov ebx,0x80C ; LDT selector
-;	vmwrite rbx,rax
-;	mov rax,0xffffffff
-;	mov ebx,0x480C ; LDT limit
-;	vmwrite rbx,rax
-;	mov rax,0x10000
-;	mov ebx,0x4820 ; LDT access
-;	vmwrite rbx,rax
-;	mov rax,0
-;	mov ebx,0x6812 ; LDT base
-;	vmwrite rbx,rax
+	xor rax,rax
+	mov ax,ldt_idx
+	mov ebx,0x80C ; LDT selector
+	vmwrite rbx,rax
+	mov rax,0xffffffff
+	mov ebx,0x480C ; LDT limit
+	vmwrite rbx,rax
+	mov rax,0x10000
+	mov ebx,0x4820 ; LDT access
+	vmwrite rbx,rax
+	mov rax,0
+	mov ebx,0x6812 ; LDT base
+	vmwrite rbx,rax
 
 	; TR (Dummy)
-;	xor rax,rax
-;	mov ax,tssd32_idx
-;	mov ebx,0x80E ; TR selector
-;	vmwrite rbx,rax
-;	mov rax,0xff
-;	mov ebx,0x480E ; TR limit
-;	vmwrite rbx,rax
-;	mov rax,0x8b
-;	mov ebx,0x4822 ; TR access
-;	vmwrite rbx,rax
-;	mov rax,0
-;	mov ebx,0x6814 ; TR base
-;	vmwrite rbx,rax
+	xor rax,rax
+	mov ax,tssd32_idx
+	mov ebx,0x80E ; TR selector
+	vmwrite rbx,rax
+	mov rax,0xff
+	mov ebx,0x480E ; TR limit
+	vmwrite rbx,rax
+	mov rax,0x8b
+	mov ebx,0x4822 ; TR access
+	vmwrite rbx,rax
+	mov rax,0
+	mov ebx,0x6814 ; TR base
+	vmwrite rbx,rax
 
 RET
 
 ; RDX linear to run
 VMX_Run:
-
-call VMX_Init_Structures
-call VMX_Enable
-
-call VMX_Disable
+;	call VMX_Host
 RET

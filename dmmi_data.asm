@@ -1,5 +1,10 @@
 SEGMENT DMMI_DATA USE16
 
+; Dummy for VMX
+ldt_start:
+ldt_1_descriptor  GDT_STR 0ffffh,0,0,92h,0cfh,0 ; 4GB 32-bit data
+ldt_size=$-(ldt_1_descriptor)
+
 ; --------------------------------------- GDT ---------------------------------------
 gdt_start dw gdt_size
 gdt_ptr dd 0
@@ -16,6 +21,8 @@ stack64_descriptor  GDT_STR 0ffffh,0,0,92h,0afh,0 ; 16TB 64-bit data, 08cfh acce
 code32as16_descriptor  GDT_STR 0ffffh,0,0,9ah,0,0    ; 64k 16-bit code
 code64as32_descriptor  GDT_STR 0ffffh,0,0,9ah,0cfh,0 ; 4GB 32-bit code , 9ah = 10011010b = Present, DPL 00,No System, Code Exec/Read. 0cfh access = 11001111b = Big,32bit,<resvd 0>,1111 more size
 code64as16_descriptor  GDT_STR 0ffffh,0,0,9ah,0,0    ; 64k 16-bit code
+ldt_descriptor     GDT_STR ldt_size,0,0,82h,0,0  ; pointer to LDT,  82h = 10000010b = Present, DPL 00, System , Type "0010b" = LDT entry
+tssd32_descriptor  GDT_STR 0h,0,0,89h,040h,0 ; TSS segment in GDT
 gdt_size = $-(dummy_descriptor)
 
 dummy_idx       = 0h    ; dummy selector
@@ -31,7 +38,8 @@ stack64_idx      =      48h             ; offset of 64-bit data segment in GDT
 code32as16_idx      =   50h             ; offset of 16-bit code segment in GDT
 code64as32_idx      =   58h             ; offset of 16-bit code segment in GDT
 code64as16_idx      =   60h             ; offset of 16-bit code segment in GDT
-
+ldt_idx = 66h
+tssd32_idx = 70h
 
 ; --------------------------------------- RM IDT ---------------------------------------
 save_rm_idt      dw 0
