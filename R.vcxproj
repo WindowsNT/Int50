@@ -99,6 +99,7 @@
     <None Include="r4.asm" />
     <None Include="r5.asm" />
     <None Include="r6.asm" />
+    <None Include="Readme.md" />
     <None Include="runx.bat" />
     <None Include="code16.asm" />
     <None Include="stack.asm" />
