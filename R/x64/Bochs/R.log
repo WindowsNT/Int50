@@ -1,6 +1,5 @@
-﻿  Could Not Find F:\TOOLS\ASM\Int50\all.exe
-  flat assembler  version 1.73.32  (1048576 kilobytes memory)
-  3 passes, 55419 bytes.
+﻿  flat assembler  version 1.73.32  (1048576 kilobytes memory)
+  3 passes, 60139 bytes.
   A subdirectory or file CD already exists.
           1 file(s) copied.
           1 file(s) copied.
@@ -15,6 +14,6 @@
   
   Mode                 LastWriteTime         Length Name                                                                 
   ----                 -------------         ------ ----                                                                 
-  -a----         04-May-25     18:40        1245184 d.iso                                                                
+  -a----         05-May-25     16:03        1245184 d.iso                                                                
   
   

@@ -99,5 +99,6 @@
     <None Include="l10.asm">
       <Filter>Common\64</Filter>
     </None>
+    <None Include="vmx64.asm" />
   </ItemGroup>
 </Project>

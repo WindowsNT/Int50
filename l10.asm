@@ -28,6 +28,8 @@ jnz .nbx0
 cmp bx,1
 jnz .nbx1
 
+linear rdi,vmx_entry_point,VMX_DATA
+mov [rdi],rdx
 linear rax,VMX_Run,VMXFUNCTIONS
 call rax
 

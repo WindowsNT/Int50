@@ -1,4 +1,24 @@
-include "guest16.asm"
+SEGMENT VMX16 
+USE16
+
+
+
+; VMX Entry for our Virtual Machine
+; This is a Real Mode segment
+
+; Note that since the memory is see through, BIOS and DOS interrupts work here!
+
+StartVM:
+
+; Remember we used a protected mode selector to get here?
+; Jump to a real mode segment now so CS gets a proper value
+
+
+nop
+nop
+vmcall ; Forces exit
+
+
 
 SEGMENT VMX_DATA
 ORG 0
@@ -7,9 +27,10 @@ PhysicalEptOffset64 dq 0
 
 ALIGN 4096
 VMXStructureData db 20000 dup (0)
+ALIGN 4096
 VMXStructureData1 dq 0 ; Used for VMXON
+ALIGN 4096
 VMXStructureData2 dq 0 ; First VMCS
-VMXStructureData3 dq 0 ; Second VMCS
 VMXRevision dd 0 ; Save Revision here
 VMXStructureSize dd 0 ; Save structure size here
 TempData db 128 dup(0)
@@ -18,6 +39,7 @@ vmt2 db 0 ; protected mode guest
 vmt3 db 0 ; unrestricted guest
 vmm1 db "[VMX] ","$"
 vmm2 db "[VMX Launch] ","$"
+vmx_entry_point dq 0
 
 
 
@@ -129,19 +151,31 @@ VMX_Initialize_Host:
 	vmw64 0x6C04,cr4
 
 	; CS:RIP
-	vmw16 0xC02,cs
+	mov dx, cs
+	and dx, 0xFFF8  ; Clear RPL and TI
+	vmw16 0xC02, dx
 	vmw64 0x6C16,rcx
 
 	; SS:RSP
-	vmw16 0xC04,ss
+	mov dx, ss
+	and dx, 0xFFF8
+	vmw16 0xC04, dx ; SS
 	vmw64 0x6C14,rsp
 
 	; DS,ES,FS,GS,TR
-	vmw16 0xC06,ds
-	vmw16 0xC00,es
-	vmw16 0xC08,fs
-	vmw16 0xC0A,gs
-;	vmw16 0xC0C,tssd32_idx //*
+	mov dx,ds
+	and dx, 0xFFF8
+	vmw16 0xC06,dx
+	mov dx,es
+	and dx, 0xFFF8
+	vmw16 0xC00,dx
+	mov dx,fs
+	and dx, 0xFFF8
+	vmw16 0xC08,dx
+	mov dx,gs
+	and dx, 0xFFF8
+	vmw16 0xC0A,dx
+	vmw16 0xC0C,tssd32_idx
 
 	; GDTR, IDTR
 	linear rdi,TempData,VMX_DATA
@@ -149,6 +183,11 @@ VMX_Initialize_Host:
 	mov rax,[rdi + 2]
 	mov rbx,0x6C0C
 	vmwrite rbx,rax
+
+	mov ax, [rdi] ; Limit
+	movzx rax, ax
+	mov rbx,0x6C0A
+	vmwrite rbx, rax ; GDTR limit
 
 	linear rdi,TempData,VMX_DATA
 	sidt [rdi] ; 10 bytes : 2 limit and 8 item
@@ -239,6 +278,8 @@ RET
 
 ; ---------------- VMX Host Exit ----------------
 VMX_VMExit:
+	nop
+	nop
 	nop
 	; Disable
 	call VMX_Disable
@@ -351,6 +392,17 @@ VMX_Initialize_UnrestrictedGuest:
 	xor rax,rax
 	mov rax,r10
 	vmwrite rbx,rax
+	
+	; MCS field "Activity State"
+	mov rbx,0x4826
+	mov rax,0
+	vmwrite rbx,rax
+
+	; RSP
+	mov rax, 200; Or wherever the guest stack should begin
+	mov rbx, 0x681C
+	vmwrite rbx, rax
+
 
 	; GDTR,IDTR
 	mov ebx,0x6816 ; GDTR Base
@@ -459,20 +511,20 @@ VMX_Host:
 	bts rdx,1
 	bts rdx,7
 	call VMX_Initialize_VMX_Controls
-	linear rcx,VMX_VMExit,CODE64
+	linear rcx,VMX_VMExit,VMXFUNCTIONS
 	call VMX_Initialize_Host
 	mov r9,VMX16
 	mov r10,StartVM
 	call VMX_Initialize_UnrestrictedGuest
 	call VMXInit2
 
-
+	; RDX load with the address
+	linear rdx,vmx_entry_point,VMX_DATA
+	mov rdx,[rdx]
 	; Launch it!!
-	xchg bx,bx
 	VMLAUNCH
 
 	; If we get here, VMLAUNCH failed
-
 	; Disable
 	call VMX_Disable
 
@@ -482,5 +534,5 @@ RET
 
 ; RDX linear to run
 VMX_Run:
-;	call VMX_Host
+	call VMX_Host
 RET

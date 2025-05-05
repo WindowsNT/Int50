@@ -81,7 +81,6 @@
     <None Include="dmmi_code.asm" />
     <None Include="dmmi_data.asm" />
     <None Include="Dos622.img" />
-    <None Include="guest16.asm" />
     <None Include="ipi16.asm" />
     <None Include="ipi32.asm" />
     <None Include="l0.asm" />
