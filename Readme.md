@@ -72,3 +72,21 @@ A thread must begin with 4096 NOPs for call alignment
 ```asm
 db 4096 dup (144) ; fill NOPs for alignment
 ```
+
+* Start 16-bit virtualized function (Available from long mode)
+EDX = linear address of the thread proc
+```asm
+; Is VMX supported?
+mov eax,10
+mov ebx, 0
+int 50h; should return RAX = 1
+
+; Run VMX
+mov eax,10
+mov ebx, 1
+linear rdx,a_virtual_64,MY_CODE
+int 50h;
+
+;
+```
+
