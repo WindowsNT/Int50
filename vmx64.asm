@@ -1,6 +1,6 @@
 SEGMENT VMX16 
 USE16
-
+ORG 0
 
 
 ; VMX Entry for our Virtual Machine
@@ -8,16 +8,32 @@ USE16
 
 ; Note that since the memory is see through, BIOS and DOS interrupts work here!
 
+temp_stack db 128 dup(0)
+
+
+StartVM2:
+nop
+nop
+mov ax,VMX16
+mov ss,ax
+mov sp,StartVM2
+mov ax,$ + 8
+push cs
+push ax
+push cx
+push dx
+retf
+; returns here
+vmcall ; Forces exit
+
+
 StartVM:
 
 ; Remember we used a protected mode selector to get here?
 ; Jump to a real mode segment now so CS gets a proper value
-
-
 nop
 nop
-vmcall ; Forces exit
-
+jmp far VMX16:StartVM2
 
 
 SEGMENT VMX_DATA
@@ -39,7 +55,8 @@ vmt2 db 0 ; protected mode guest
 vmt3 db 0 ; unrestricted guest
 vmm1 db "[VMX] ","$"
 vmm2 db "[VMX Launch] ","$"
-vmx_entry_point dq 0
+vmx_entry_point_seg dw 0
+vmx_entry_point_ofs dw 0
 
 
 
@@ -519,9 +536,12 @@ VMX_Host:
 	call VMXInit2
 
 	; RDX load with the address
-	linear rdx,vmx_entry_point,VMX_DATA
-	mov rdx,[rdx]
+	linear rdx,vmx_entry_point_seg,VMX_DATA
+	mov cx,[rdx]
+	linear rdx,vmx_entry_point_ofs,VMX_DATA
+	mov dx,[rdx]
 	; Launch it!!
+
 	VMLAUNCH
 
 	; If we get here, VMLAUNCH failed

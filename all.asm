@@ -12,12 +12,16 @@ msg_hello2 db "Hello from thread",0xd,0xa,"$"
 msg_hello3 db "Hello from thread",0xd,0xa,"$"
 
 SEGMENT MY_CODE
-USE64
+USE16
 
 a_virtual_64:
 	nop
 	nop
-	ud2
+	nop
+	nop
+	retf
+
+USE64
 
 a_proc_64v:
 	nop
@@ -33,7 +37,8 @@ a_proc_64v:
 	; Run VMX
 	mov eax,10
 	mov ebx, 1
-	linear rdx,a_virtual_64,MY_CODE
+	mov dx,a_virtual_64
+	mov cx,MY_CODE
 	int 50h ;
 
 	ret
@@ -212,7 +217,7 @@ start16:
 	mov eax,4
 	xor ecx,ecx
 	linear edx,a_proc_64v,MY_CODE
-	int 50h
+;	int 50h
 
 
 ; Message

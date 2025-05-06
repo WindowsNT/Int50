@@ -74,7 +74,7 @@ db 4096 dup (144) ; fill NOPs for alignment
 ```
 
 * Start 16-bit virtualized function (Available from long mode)
-EDX = linear address of the thread proc
+CD:DX = linear address of the real mode proc
 ```asm
 ; Is VMX supported?
 mov eax,10
@@ -84,7 +84,8 @@ int 50h; should return RAX = 1
 ; Run VMX
 mov eax,10
 mov ebx, 1
-linear rdx,a_virtual_64,MY_CODE
+mov dx,a_virtual_64
+mov cx,MY_CODE
 int 50h;
 
 ;
