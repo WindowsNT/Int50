@@ -9,7 +9,8 @@ SEGMENT MY_DATA
 mymut_1 db 0xFF
 msg_hello1 db "Hello",0xd,0xa,"$"
 msg_hello2 db "Hello from thread",0xd,0xa,"$"
-msg_hello3 db "Hello from thread",0xd,0xa,"$"
+msg_hello3 db "Hello from thread 3",0xd,0xa,"$"
+msg_hello4 db "Hello from VM",0xd,0xa,"$"
 
 SEGMENT MY_CODE
 USE16
@@ -18,6 +19,23 @@ a_virtual_64:
 	nop
 	nop
 	nop
+	CLI
+
+	; Set interrupts
+	mov ax,DMMI_DATA
+	mov ds,ax
+	xor eax,eax
+	lidt fword [save_rm_idt]
+	sti
+
+	; Try int 21
+	mov ax,MY_DATA
+	mov ds,ax
+	mov ax,0x0900
+	mov dx, msg_hello4
+	int 21h
+
+
 	nop
 	retf
 
@@ -39,7 +57,7 @@ a_proc_64v:
 	mov ebx, 1
 	mov dx,a_virtual_64
 	mov cx,MY_CODE
-	int 50h ;
+	int 50h 
 
 	ret
 
@@ -213,11 +231,12 @@ start16:
 	 mov ebx,3
 	 int 0x50
 
-; A 64-bit proc that starts VM
+
+; Call an 64-bit proc that starts a VM
 	mov eax,4
 	xor ecx,ecx
 	linear edx,a_proc_64v,MY_CODE
-;	int 50h
+	int 50h
 
 
 ; Message

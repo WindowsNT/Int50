@@ -14,6 +14,8 @@ temp_stack db 128 dup(0)
 StartVM2:
 nop
 nop
+nop
+nop
 mov ax,VMX16
 mov ss,ax
 mov sp,StartVM2
@@ -38,9 +40,6 @@ jmp far VMX16:StartVM2
 
 SEGMENT VMX_DATA
 ORG 0
-; VMX DATA
-PhysicalEptOffset64 dq 0
-
 ALIGN 4096
 VMXStructureData db 20000 dup (0)
 ALIGN 4096
@@ -220,68 +219,42 @@ VMX_Initialize_Host:
 RET
 
 
+
 VMX_InitializeEPT:
-	xor rdi,rdi
-	linear rax,PhysicalEptOffset64,VMX_DATA
-	mov rdi,[rax]
- 
-	; Clear everything
-	push rdi
-	xor rax,rax
-	mov ecx,8192
-	rep stosq
-	pop rdi
-	; RSI to PDPT
-	mov rsi,rdi
-	add rsi,8*512
+    ; RDI = Base address of EPT memory (must be pre-allocated 4KB-aligned)
+    xor rdi, rdi
+	mov rdi, 4*1024*1024;  4th MB
 
-	; first pml4t entry
-	xor rax,rax
-	mov rax,rsi ; RAX now points to the RSI (First PDPT entry)
-	shl rax,12 ; So we move it to bit 12
-	shr rax,12 ; We remove the lower 4096 bits
-	or rax,7 ; Add the RWE bits
-	mov [rdi],rax ; Store the PML4T entry. We only need 1 entry
+    ; Clear full EPT memory area (at least 4KB for PML4 + PDPTEs)
+    push rdi
+    xor rax, rax
+    mov ecx, 8192
+    rep stosq
+    pop rdi
 
-	
-	; First PDPT entry (1st GB)
-	xor rax,rax
-	or rax,7 ; Add the RWE bits
-	bts rax,7 ; Add the 7th "S" bit to tell the CPU that this doesn't refer to a PDT
-	mov [rsi],rax ; Store the PMPT entry for 1st GB
+    ; PML4 at RDI
+    ; PDPT at RDI + 0x1000
+    lea rsi, [rdi + 0x1000]
 
-	; Second PDPT entry (2nd GB)
-	add rsi,8
-	xor rax,rax
-	mov rax,1024*1024*1024*1
-	shr rax,12
-	shl rax,12
-	or rax,7 ; Add the RWE bits
-	bts rax,7 ; Add the 7th "S" bit to tell the CPU that this doesn't refer to a PDT
-	mov [rsi],rax ; Store the PMPT entry for 2nd GB
+    ; Point PML4[0] to PDPT
+    mov rax, rsi
+	and rax, 0xFFFFFFFFFFFFF000
+	or rax, 0x07            ; R/W/X permissions
+    mov [rdi], rax
 
-	; Third PDPT entry (3rd GB)
-	add rsi,8
-	xor rax,rax
-	mov rax,1024*1024*1024*2
-	shr rax,12
-	shl rax,12
-	or rax,7 ; Add the RWE bits
-	bts rax,7 ; Add the 7th "S" bit to tell the CPU that this doesn't refer to a PDT
-	mov [rsi],rax ; Store the PMPT entry for 3rd GB
+    ; Setup PDPT entries (1GB pages)
+    ; Each entry maps 1GB with PS (bit 7) set
+    mov rcx, 0              ; Loop counter (0..3 for 4GB)
+.next_gb:
+    mov rax, rcx
+    shl rax, 30             ; 1GB per entry
+    or rax, 0x87            ; R/W/X + PS (bit 7)
+    mov [rsi + rcx*8], rax
+    inc rcx
+    cmp rcx, 4
+    jl .next_gb
 
-	; Fourh PDPT entry (4th GB)
-	add rsi,8
-	xor rax,rax
-	mov rax,1024*1024*1024*3
-	shr rax,12
-	shl rax,12
-	or rax,7 ; Add the RWE bits
-	bts rax,7 ; Add the 7th "S" bit to tell the CPU that this doesn't refer to a PDT
-	mov [rsi],rax ; Store the PMPT entry for 4th GB
-
-
-RET
+    ret
 
 
 ; ---------------- Disable VMX ----------------
@@ -326,10 +299,8 @@ RET
 VMXInit2:
 
 	; The EPT initialization for the guest
-	linear rax,PhysicalEptOffset64,VMX_DATA
-	mov rax,[rax]
-	or rax,0 ; Memory Type 0
-	or rax,0x18 ; Page Walk Length 3
+	mov rax, 4*1024*1024;  4th MB
+	or rax,0x1E  	
 	mov rbx,0x201A ; EPTP
 	vmwrite rbx,rax
  

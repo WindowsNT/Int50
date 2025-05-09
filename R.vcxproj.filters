@@ -88,10 +88,6 @@
     <None Include="dmmi_data.asm" />
     <None Include="ipi16.asm" />
     <None Include="ipi32.asm" />
-    <None Include="l7.asm" />
-    <None Include="p5.asm" />
-    <None Include="p7.asm" />
-    <None Include="r6.asm" />
     <None Include="stack.asm" />
     <None Include="Readme.md">
       <Filter>Common</Filter>
@@ -100,5 +96,17 @@
       <Filter>Common\64</Filter>
     </None>
     <None Include="vmx64.asm" />
+    <None Include="l7.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="p7.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="p5.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="r6.asm">
+      <Filter>Common\16</Filter>
+    </None>
   </ItemGroup>
 </Project>
