@@ -1,7 +1,16 @@
 FORMAT MZ
 HEAP 0
-include "macros.asm"
-include "stack.asm"
+
+; Stack
+USE16
+SEGMENT STACK_SEGMENT 
+sseg16 dw 4096 dup (?)
+stack_end:
+sseg16_t2 dw 1024 dup (?)
+stack_t2_end:
+
+; Required stuff
+include "dmmi_macros.asm"
 include "dmmi_data.asm"
 include "dmmi_code.asm"
 

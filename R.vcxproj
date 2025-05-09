@@ -95,7 +95,7 @@
     <None Include="r0.asm" />
     <None Include="r1.asm" />
     <None Include="r2.asm" />
-    <None Include="macros.asm" />
+    <None Include="dmmi_macros.asm" />
     <None Include="r3.asm" />
     <None Include="r4.asm" />
     <None Include="r5.asm" />
@@ -103,7 +103,6 @@
     <None Include="Readme.md" />
     <None Include="runx.bat" />
     <None Include="code16.asm" />
-    <None Include="stack.asm" />
     <None Include="startbochs.bat" />
     <None Include="vmx64.asm" />
   </ItemGroup>

@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="all.asm">
-      <Filter>Common</Filter>
-    </None>
     <None Include="code16.asm">
       <Filter>Common\16</Filter>
     </None>
@@ -45,7 +42,7 @@
     <None Include="r1.asm">
       <Filter>Common\16</Filter>
     </None>
-    <None Include="macros.asm">
+    <None Include="dmmi_macros.asm">
       <Filter>Common</Filter>
     </None>
     <None Include="r2.asm">
@@ -84,18 +81,12 @@
     <None Include="r5.asm">
       <Filter>Common\16</Filter>
     </None>
-    <None Include="dmmi_code.asm" />
-    <None Include="dmmi_data.asm" />
-    <None Include="ipi16.asm" />
-    <None Include="ipi32.asm" />
-    <None Include="stack.asm" />
     <None Include="Readme.md">
       <Filter>Common</Filter>
     </None>
     <None Include="l10.asm">
       <Filter>Common\64</Filter>
     </None>
-    <None Include="vmx64.asm" />
     <None Include="l7.asm">
       <Filter>Common\64</Filter>
     </None>
@@ -108,5 +99,21 @@
     <None Include="r6.asm">
       <Filter>Common\16</Filter>
     </None>
+    <None Include="ipi16.asm">
+      <Filter>Common\16</Filter>
+    </None>
+    <None Include="ipi32.asm">
+      <Filter>Common\32</Filter>
+    </None>
+    <None Include="vmx64.asm">
+      <Filter>Common\64</Filter>
+    </None>
+    <None Include="dmmi_code.asm">
+      <Filter>Common</Filter>
+    </None>
+    <None Include="dmmi_data.asm">
+      <Filter>Common</Filter>
+    </None>
+    <None Include="all.asm" />
   </ItemGroup>
 </Project>
