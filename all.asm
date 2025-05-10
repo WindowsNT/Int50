@@ -167,6 +167,7 @@ Thread16_1:
 	linear edx,a_proc_64,MY_CODE
 	int 50h
 
+
 	; Unlock mutex
 	mov ax,MY_DATA
 	mov es,ax
@@ -254,7 +255,6 @@ start16:
 	mov ax,0x0900
 	mov dx, msg_hello1
 	int 21h
-
 
 ; End
 	mov ax,0x4c00
