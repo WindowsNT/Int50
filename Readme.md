@@ -20,7 +20,8 @@ call far CODE16:F_InstallVector50
 ```
 
 
-## Initialize Int 0x50. This must be called from all entry points (start, thread, protected mode, long mode functions)
+## Initialize Int 0x50. 
+This must be called from all entry points (start, thread, protected mode, long mode functions)
 
 Modes: Real, Protected, Long
 
@@ -30,7 +31,8 @@ int 50h
 ```
 
 
-## Enable Unreal mode. This also initializes ACPI structures.
+## Enable Unreal mode. 
+This also initializes ACPI structures.
 
 Modes: Real
 
@@ -77,7 +79,8 @@ mov dx,Func_Real
 int 50h
 ```
 
-## Start 16-bit thread. This thread can call Int 50x functions to switch to protected or long mode.
+## Start 16-bit thread. 
+This thread can call Int 50x functions to switch to protected or long mode.
  
 Modes: Real. 
 
@@ -140,7 +143,10 @@ hlt
 
 ```
 
-## Start 16-bit virtualized function (Available from long mode). To call this function, first call a long mode function.
+## Start 16-bit virtualized function
+To call this function, first call a long mode function.
+
+Modes: Long
 
 CD:DX = linear address of the real mode proc.
 ```asm
