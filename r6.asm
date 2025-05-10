@@ -6,7 +6,7 @@ USE16
 ; ES:DI = mutex address (byte)
 
 cmp ax,6
-jnz F_Handler50_No6
+jnz .F_Handler50_No6
 
 ; Create mutex
 cmp bx,0
@@ -64,4 +64,4 @@ JNZ .LoopA ; Write failed
 iret
 .nobx4:
 iret
-F_Handler50_No6:
+.F_Handler50_No6:
