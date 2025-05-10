@@ -11,7 +11,7 @@ include "dmmi_data.asm"
 include "dmmi_code.asm"
 ```
 
-* Install interrupt
+## Install interrupt
 
 Modes: Real
 
@@ -20,7 +20,7 @@ call far CODE16:F_InstallVector50
 ```
 
 
-* Initialize Int 0x50. This must be called from all entry points (start, thread, protected mode, long mode functions)
+## Initialize Int 0x50. This must be called from all entry points (start, thread, protected mode, long mode functions)
 
 Modes: Real, Protected, Long
 
@@ -30,7 +30,7 @@ int 50h
 ```
 
 
-* Enable Unreal mode. This also initializes ACPI structures.
+## Enable Unreal mode. This also initializes ACPI structures.
 
 Modes: Real
 
@@ -39,7 +39,7 @@ mov eax,2
 int 50h
 ```
 
-* Call 32-bit protected mode function
+## Call 32-bit protected mode function
 
 Modes: Real
 
@@ -51,7 +51,7 @@ linear edx,a_proc_32,MY_CODE
 int 50h
 ```
 
-* Call 64-bit long mode function
+## Call 64-bit long mode function
 
 Modes: Real, Protected
 
@@ -64,7 +64,7 @@ linear edx,a_proc_64,MY_CODE
 int 50h
 ```
 
-* Call 16-bit real mode function
+## Call 16-bit real mode function
 
 Modes: Protected, Long
 
@@ -77,7 +77,7 @@ mov dx,Func_Real
 int 50h
 ```
 
-* Start 16-bit thread. This thread can call Int 50x functions to switch to protected or long mode.
+## Start 16-bit thread. This thread can call Int 50x functions to switch to protected or long mode.
  
 Modes: Real. 
 
@@ -97,7 +97,7 @@ A thread must begin with 4096 NOPs for call alignment
 db 4096 dup (144) ; fill NOPs for alignment
 ```
 
-* Mutex functions
+## Mutex functions
 
 Modes: Real, Protected, Long
  
@@ -140,7 +140,7 @@ hlt
 
 ```
 
-* Start 16-bit virtualized function (Available from long mode). To call this function, first call a long mode function.
+## Start 16-bit virtualized function (Available from long mode). To call this function, first call a long mode function.
 
 CD:DX = linear address of the real mode proc.
 ```asm
